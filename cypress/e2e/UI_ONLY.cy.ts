@@ -1,7 +1,7 @@
 import {SearchForm, SearchGrid} from '../pageObject/SearchPage'
-import {LicenseInformation, ResponseValue} from '../pageObject/ProfilePage'
+import {LicenseInformation, ResponseValue} from '../pageObject/UI/ProfilePage'
 import inputJson from '../fixtures/input.json'
-import {prettyString, validateUserDataInput, monthNum, VerificationError} from '../support/utils'
+import {prettyString, validateUserDataInput, MonthNum, VerificationError} from '../support/common_utils'
 
 interface resultOfCheck{
   done: boolean,
@@ -27,9 +27,7 @@ describe('Prove license data', {baseUrl: 'https://findmydoctor.mass.gov/'}, () =
   inputJson.forEach((userRecord) => {
     it(`Get data about license of user: ${JSON.stringify( userRecord )}`, () => {
       cy.intercept('POST', 'https://api.medboard.mass.gov/api-public/search').as('searchReq')
-
       let res: Array<any> = validateUserDataInput(userRecord)
-      cy.log(`res: ${res}`)
       if (res.length){
           cy.writeToOutput({error: VerificationError.IncorrectInputData})
       }else{
@@ -112,7 +110,7 @@ describe('Prove license data', {baseUrl: 'https://findmydoctor.mass.gov/'}, () =
                     let dataGroup =  dateRegex.exec(expnDate)
                     expect(dataGroup.length).to.be.eq(4)
                     let [month, day, year] = Object.values( dataGroup ).slice(1,4)
-                    expnDate = `${monthNum[prettyString(month)]}/${day}/${year}`
+                    expnDate = `${MonthNum[prettyString(month)]}/${day}/${year}`
                     resp.value.expirationDate = expnDate
                   });
         
@@ -133,44 +131,7 @@ describe('Prove license data', {baseUrl: 'https://findmydoctor.mass.gov/'}, () =
           }).then((finalData:resultOfCheck)=>{
             cy.writeToOutput(finalData.value)
           })
-
-
-            
-              // cy.visit(`/profiles/${prettyString( userRecord.licenseNumber )}`)
-        
-              // cy.wrap(licenseInformation.getDataByKeys()).then(function(data){
-                //   this.resp = {
-                //     licenseNumber: userRecord.licenseNumber,
-                //   }
-        
-                //   data.expiration.then($expirationDate => {
-                //     let expnDate = $expirationDate.text();
-                //     let dateRegex = /(\w{3,9})\s(\d{2})\,\s(\d{4})/gsi
-                //     let dataGroup =  dateRegex.exec(expnDate)
-                //     expect(dataGroup.length).to.be.eq(4)
-                //     let [month, day, year] = Object.values( dataGroup ).slice(1,4)
-                //     expnDate = `${monthNum[prettyString(month)]}/${day}/${year}`
-                //     this.resp.expirationDate = expnDate
-                //   });
-        
-                //   data.status.then($status => {
-                //     this.resp.licenseStatus = prettyString($status.text())
-                //   });
-
-                //   data.name.then($fullName => {
-                //       this.resp.name = prettyString($fullName.text())
-                //   });
-                //   cy.writeToOutput(this.resp)
-                //   console.log(`${this.resp} || ${userRecord}`)
-
-                // })
-                
-          
-
-          
-
-
-        }
+      }
     })
   })
 })

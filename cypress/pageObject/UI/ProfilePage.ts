@@ -1,18 +1,9 @@
 
 
-interface ResponseValue{
-    status?:Cypress.Chainable
-    expiration?:Cypress.Chainable
-    name?:Cypress.Chainable
-}
-
+import {ResponseValue} from '../../support/interface'
 
 class LicenseInformation{
 
-
-    constructor(){
-        
-    }
 
 
     getForm(){

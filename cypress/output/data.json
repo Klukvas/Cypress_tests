@@ -1,0 +1,47 @@
+[
+  {
+    "name": "Allan P Kuong",
+    "licenseNumber": "80098",
+    "licenseStatus": "Active",
+    "expirationDate": "12/03/2023"
+  },
+  {
+    "error": "NumberDoesNotMatchLicenseError"
+  },
+  {
+    "error": "NoLicenseFoundError"
+  },
+  {
+    "error": "IncorrectInputData"
+  },
+  {
+    "name": "Allan P Kuong",
+    "licenseNumber": "80098",
+    "licenseStatus": "Active",
+    "expirationDate": "12/03/2023"
+  },
+  {
+    "error": "NumberDoesNotMatchLicenseError"
+  },
+  {
+    "error": "NoLicenseFoundError"
+  },
+  {
+    "error": "IncorrectInputData"
+  },
+  {
+    "name": "Allan P Kuong",
+    "licenseNumber": "80098",
+    "licenseStatus": "Active",
+    "expirationDate": "12/03/2023"
+  },
+  {
+    "error": "NumberDoesNotMatchLicenseError"
+  },
+  {
+    "error": "NoLicenseFoundError"
+  },
+  {
+    "error": "IncorrectInputData"
+  }
+]
