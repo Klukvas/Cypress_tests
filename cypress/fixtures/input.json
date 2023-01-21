@@ -1,0 +1,22 @@
+[
+  {
+    "firstName": "Allan",
+    "lastName": "Kuong",
+    "licenseNumber": "80098"
+  },
+  {
+    "firstName": "Allan",
+    "lastName": "Kuong",
+    "licenseNumber": "80123098"
+  },
+  {
+    "firstName": "daflkgnlkafg",
+    "lastName": "Kuoadfgdsfgsdng",
+    "licenseNumber": "80123098"
+  },
+  {
+    "firstName": null,
+    "lastName": "Kuoadfgdsfgsdng",
+    "licenseNumber": "80123098"
+  }
+]

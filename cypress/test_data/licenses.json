@@ -1,0 +1,12 @@
+{
+    "active": {
+        "firstName": "Allan",
+        "lastName": "Kuong",
+        "licenseNumber": "80098"
+    },
+    "inactive": {
+        "firstName": "Laura",
+        "lastName": "Johnson",
+        "licenseNumber": "254089"
+    }
+}
