@@ -49,7 +49,6 @@ declare global {
 
 
 Cypress.Commands.add('writeToOutput', (dataToWrite:object):void => {
-    console.log(`call with: ${dataToWrite}`)
     cy.readFile(Cypress.env('pathToOutput')).then(fileData => {
         fileData.push(dataToWrite)
         cy.writeFile(Cypress.env('pathToOutput'), fileData)
