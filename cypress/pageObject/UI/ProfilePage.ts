@@ -64,7 +64,7 @@ class LicenseInformation{
      * Values of keys are Chainable<Element>
     */
     getDataByKeys(options: string[] = ['status', 'expiration', "name"]): Promise<{}>{
-        return new Promise((resolve, reject) => {
+        return new Cypress.Promise((resolve, reject) => {
             let response:ResponseValue = {};
             for(let key of options){
                 if(key === 'status'){
