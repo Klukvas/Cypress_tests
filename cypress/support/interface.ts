@@ -1,18 +1,24 @@
 import {VerificationError} from  './common_utils'
 
-interface ResponseValue{
+type ResponseValue={
     status?:Cypress.Chainable
     expiration?:Cypress.Chainable
     name?:Cypress.Chainable
 }
 
-interface UserDataInput {
+type FindDataContainer = {
+    msg?: string
+    element: null | JQuery<HTMLElement>
+    result: boolean
+}
+
+type UserDataInput={
     firstName: string
     lastName: string
     licenseNumber: string
 }
 
-interface SuccessParsed{
+type SuccessParsed ={
     name: string
     licenseNumber: string
     licenseStatus: string
@@ -35,11 +41,12 @@ type verificationErrorValue = {
  * it is used for output
  * @member {string} msg could be filled in we need to throw an error
  */
-interface CurretTestState{
+type CurretTestState = {
     done: boolean
     value?:SuccessParsed | verificationErrorValue
     msg?: string
+    makeScreenshot: boolean
 }
 
 
-export {ResponseValue, UserDataInput, SuccessParsed, CurretTestState}
+export {ResponseValue, UserDataInput, SuccessParsed, CurretTestState, FindDataContainer}

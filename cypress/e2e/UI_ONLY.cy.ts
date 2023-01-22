@@ -1,13 +1,8 @@
-import {SearchForm, SearchGrid} from '../pageObject/SearchPage'
+import {SearchForm, SearchGrid} from '../pageObject/UI/SearchPage'
 import {LicenseInformation, ResponseValue} from '../pageObject/UI/ProfilePage'
 import inputJson from '../fixtures/input.json'
 import {prettyString, validateUserDataInput, MonthNum, VerificationError} from '../support/common_utils'
-
-interface resultOfCheck{
-  done: boolean,
-  msg?: string
-  value?: object
-}
+import {CurretTestState, SuccessParsed} from '../support/interface'
 
 
 describe('Prove license data', {baseUrl: 'https://findmydoctor.mass.gov/'}, () => {
@@ -45,90 +40,57 @@ describe('Prove license data', {baseUrl: 'https://findmydoctor.mass.gov/'}, () =
           ( I just wanna show how to deal in cases when we do not have JSON responses )
         */
           cy.wait('@searchReq', {timeout:6000})
-          cy.wait(500) //just for rendering
-          searchGrid.checkIfLicenseExists().then((resultOfSearch):resultOfCheck => {
+          cy.wait(600) //just for rendering
+
+          
+          searchGrid.checkIfLicenseExists().then((resultOfSearch):CurretTestState => {
             if(resultOfSearch.result){
                   if(resultOfSearch.element.length !== 1){
-                    return {done: true, value: {error: VerificationError.MultipleLicensesFoundError}}
+                    return {done: true, value: {error: VerificationError.MultipleLicensesFoundError}, makeScreenshot: false}
                   }else{
-                    return {done: false}
+                    return {done: false, makeScreenshot: true}
                   }
             }else{
                   if(resultOfSearch?.msg){
-                    return {done: true, msg: resultOfSearch.msg}
+                    return {done: true, msg: resultOfSearch.msg, makeScreenshot: false}
                   }else{
-                        return {done: true, value: {error: VerificationError.NoLicenseFoundError}}
+                        return {done: true, value: {error: VerificationError.NoLicenseFoundError}, makeScreenshot: false}
                       }
               }
-          }).then(resultOfRowCheck => {
+          }).then((resultOfRowCheck:CurretTestState) => {
             if(!resultOfRowCheck.done){
-              return searchGrid.getLicenseNum().then((licensNum) => {
+              return searchGrid.getLicenseNum().then((licensNum):CurretTestState => {
                   if(prettyString(licensNum) !== prettyString(userRecord.licenseNumber)){
-                    return {done: true, value: {error: VerificationError.NumberDoesNotMatchLicenseError}}
+                    return {done: true, value: {error: VerificationError.NumberDoesNotMatchLicenseError}, makeScreenshot: false}
                   }else{
-                    return {done: false}
+                    return {done: false, makeScreenshot: true}
                   }
                 })
-            }else{
-              return resultOfRowCheck
             }
-          }).then((checkLicenseNumRes:resultOfCheck) => {
-            console.log(`checkLicenseNumRes: ${JSON.stringify(checkLicenseNumRes)}`)
+          }).then((checkLicenseNumRes:CurretTestState) => {
             if(!checkLicenseNumRes.done){
-              console.log('HERE')
-              return searchGrid.getFullName().then((fullName):resultOfCheck => {
+              return searchGrid.getFullName().then((fullName):CurretTestState => {
                     let result = prettyString(fullName) === prettyString(userRecord.firstName + ' ' + userRecord.lastName)
                     if(!result){
-                      return {done: true, value: {error: VerificationError.NameDoesNotMatchLicenseError}}
+                      return {done: true, value: {error: VerificationError.NameDoesNotMatchLicenseError}, makeScreenshot: false}
                     }else{
-                      return {done: false}
+                      return {done: false, makeScreenshot: true}
                     }
                   })
-            }else{
-              return checkLicenseNumRes
-            }
-          }).then((checkNameRes:resultOfCheck) => {
+                }
+           
+          }).then((checkNameRes:CurretTestState) => {
             if(!checkNameRes.done){
               cy.visit(`/profiles/${prettyString( userRecord.licenseNumber )}`)
-              return licenseInformation.getDataByKeys().then(function(licenseData:ResponseValue):resultOfCheck {
-                  // let resp: successResp
-                  // resp.licenseNumber = userRecord.licenseNumber
-                  let resp = {
-                    value:{
-                      licenseNumber: userRecord.licenseNumber,
-                      expirationDate:null,
-                      licenseStatus:null,
-                      name: null
-                    },
-                    done: false
-                    
-                  }
-                  licenseData.expiration.then($expirationDate => {
-                    console.log(`resp: ${JSON.stringify(resp)}`)
-                    let expnDate = $expirationDate.text();
-                    let dateRegex = /(\w{3,9})\s(\d{2})\,\s(\d{4})/gsi
-                    let dataGroup =  dateRegex.exec(expnDate)
-                    expect(dataGroup.length).to.be.eq(4)
-                    let [month, day, year] = Object.values( dataGroup ).slice(1,4)
-                    expnDate = `${MonthNum[prettyString(month)]}/${day}/${year}`
-                    resp.value.expirationDate = expnDate
-                  });
-        
-                  licenseData.status.then($status => {
-                    resp.value.licenseStatus = prettyString($status.text())
-                  });
-
-                  licenseData.name.then($fullName => {
-                      resp.value.name = prettyString($fullName.text())
-                  });
-                  resp.done = true
-                  return resp
-
-                })
-            }else{
-              return checkNameRes
+              return licenseInformation.getDataByKeys().then(function(licenseData:ResponseValue) {
+                  return licenseInformation.parseData(licenseData)
+              })
             }
-          }).then((finalData:resultOfCheck)=>{
+          }).then((finalData:CurretTestState)=>{
+            //we also could check by URL. But I added the "makescreenshot" key for API tests
+            if(finalData.makeScreenshot){
+              cy.screenshot(`${JSON.stringify(userRecord)}`, {overwrite: true})
+            }
             cy.writeToOutput(finalData.value)
           })
       }

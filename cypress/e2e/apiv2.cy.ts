@@ -29,6 +29,16 @@ describe('Prove license data', {baseUrl: 'https://api.medboard.mass.gov/api-publ
                     }
                 }).then((licenseData: CurretTestState) => {
                     cy.writeToOutput(licenseData.value)
+                    if(licenseData.makeScreenshot){
+                        cy.intercept({url:'https://findmydoctor.mass.gov/assets/svg-icons/Seal_of_Massachusetts.svg'})
+                            .as('longestReq')
+                        cy.visit(`https://findmydoctor.mass.gov/profiles/${userRecord.licenseNumber}`)
+                        cy.wait('@longestReq');
+                        cy.wait(600) // just for render
+                        cy.screenshot(`${JSON.stringify(userRecord)}`, {overwrite: true})
+
+                    }
+                    
                 })
             }
         })
