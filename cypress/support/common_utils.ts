@@ -1,14 +1,10 @@
 const Validator = require('jsonschema').Validator;
 const fs = require('fs');
+import {UserDataInput} from './interface'
 
 
-interface userDataInput {
-    firstName: string
-    lastName: string
-    licenseNumber: string
-}
 
-function validateUserDataInput (dataObj:userDataInput): Array<any> {
+function validateUserDataInput (dataObj:UserDataInput): Array<any> {
     const validator = new Validator();
     const userDataSchema: Object = {
         "id": "/UserDataSchema",
@@ -23,14 +19,6 @@ function validateUserDataInput (dataObj:userDataInput): Array<any> {
     return result.errors
 }
 
-// function writeToOutput(dataToWrite:object): void{
-//     console.log(Cypress.env('pathToOutput'))
-//     let existedData:object[] = JSON.parse( fs.readFileSync(Cypress.env('pathToOutput'), 'utf8') )
-//     existedData.push(dataToWrite)
-//     return fs.writeFileSync(Cypress.env('pathToOutput'), JSON.stringify(existedData))
-// }
-
-
 function prettyString(data:string): string{
     return data.trim().toLowerCase()
 }
@@ -43,19 +31,19 @@ const enum VerificationError {
     IncorrectInputData = 'IncorrectInputData'
   }
 
-const monthNum = {
-    "january" : 1,
-    "february" : 2, 
-    "march" : 3, 
-    "april" : 4, 
-    "may" : 5, 
-    "june" : 6, 
-    "july" : 7, 
-    "august" : 8, 
-    "september" : 9, 
-    "october" : 10, 
-    "november" : 11,
-    "december" : 12,
+enum MonthNum{
+    "january" = 1,
+    "february" = 2,
+    "march" = 3,
+    "april" = 4, 
+    "may" = 5, 
+    "june" = 6, 
+    "july" = 7, 
+    "august" = 8, 
+    "september" = 9, 
+    "october" = 10, 
+    "november" = 11,
+    "december" = 12,
 }
 
-export {prettyString, validateUserDataInput, monthNum, VerificationError}
+export {prettyString, validateUserDataInput, MonthNum, VerificationError}

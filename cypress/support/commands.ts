@@ -1,6 +1,5 @@
 /// <reference types="cypress" />
 
-import { resolve } from "cypress/types/bluebird";
 
 // ***********************************************
 // This example commands.ts shows you how to
@@ -38,22 +37,47 @@ import { resolve } from "cypress/types/bluebird";
 //     }
 //   }
 // }
+declare global {
+    namespace Cypress {
+        interface Chainable {
+            writeToOutput: (data: object) => void;
+            licenseSearchRequest: (firstName:string, lastName:string) => Cypress.Chainable<Cypress.Response<any>>
+            licenseDataRequest: (licenseNumber:string) => Cypress.Chainable<Cypress.Response<any>>
+        }
+    }
+}
 
 
-Cypress.Commands.add('writeToOutput', (dataToWrite:object):Cypress.Chainable<any> => {
+Cypress.Commands.add('writeToOutput', (dataToWrite:object):void => {
     console.log(dataToWrite)
-    return cy.readFile(Cypress.env('pathToOutput')).then(fileData => {
+    cy.readFile(Cypress.env('pathToOutput')).then(fileData => {
         fileData.push(dataToWrite)
         cy.writeFile(Cypress.env('pathToOutput'), fileData)
     })
 })
 
-
-
-declare global {
-    namespace Cypress {
-        interface Chainable {
-            writeToOutput: (data: object) => Chainable<any>
+Cypress.Commands.add('licenseSearchRequest', (firstName:string, lastName:string) => {
+    return cy.request({
+        method: 'POST',
+        url: "search",
+        failOnStatusCode: true,
+        body: {
+            "licenseMetaId": null,
+            "firstName": firstName,
+            "lastName": lastName,
+            "specialties": [],
+            "cities": [],
+            "searchType": "BY_PHYSICIAN_NAME"
         }
-    }
-}
+    })
+})
+
+Cypress.Commands.add('licenseDataRequest', (licenseNumber:string) => {
+    return cy.request({
+        method: "GET",
+        failOnStatusCode: true,
+        url: `search/physician-profiles/${licenseNumber}`
+    })
+})
+
+export {}

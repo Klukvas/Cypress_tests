@@ -1,5 +1,5 @@
 
-
+import {CurretTestState, FindDataContainer} from '../../support/interface'
 class SearchForm{
 
     defaultInputId:string = "input#physician-{0}-input"
@@ -28,10 +28,16 @@ class SearchForm{
 
 
 class SearchGrid{
-    
-
-    checkIfLicenseExists(){
-        return cy.get('app-header').next().then(globalContainer => {
+    /**
+     * 
+        here are 3 variants of response:
+        - we found the container with a license {result: true, element: Cypress.Chainable<Element>)}
+        - we found the container "with no result"{result: false,element: null}
+        - we do not found anything{msg:'test with err msg',element: null,result: false}
+     * 
+     */
+    checkIfLicenseExists(): Cypress.Chainable{
+        return cy.get('app-header').next().then((globalContainer):FindDataContainer => {
             if(globalContainer.find('div.no-result-container').length > 0){
                 return {
                     result: false,
@@ -57,8 +63,10 @@ class SearchGrid{
     getLicense(){
         return cy.get('div#searchGrid').find('div[ref=eBodyViewport]')
     }
-
-    getFullName(){
+    /**
+     * Get full name of license from row of license(after search)
+     */
+    getFullName(): Cypress.Chainable<string>{
         //if we are here, then there is only 1 license entry
         this.getLicense().as('licenseRow');
         return cy.get('@licenseRow')
@@ -66,8 +74,10 @@ class SearchGrid{
                 .find('span')
                 .invoke('text')
     }
-
-    getLicenseNum(){
+    /**
+     * Get number of license from row of license(after search)
+     */
+    getLicenseNum(): Cypress.Chainable<string>{
         //if we are here, then there is only 1 license entry
         this.getLicense().as('licenseRow');
         return cy.get('@licenseRow')
