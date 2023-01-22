@@ -36,7 +36,6 @@ describe('Prove license data', {baseUrl: 'https://api.medboard.mass.gov/api-publ
                         cy.wait('@longestReq');
                         cy.wait(600) // just for render
                         cy.screenshot(`${JSON.stringify(userRecord)}`, {overwrite: true})
-
                     }
                     
                 })

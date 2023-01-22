@@ -4,16 +4,17 @@ import path from 'path'
 
 export default defineConfig({
   e2e: {
-    
+    baseUrl: 'https://findmydoctor.mass.gov/', //https://github.com/cypress-io/cypress/issues/2542
     defaultCommandTimeout: 6000,
     experimentalInteractiveRunEvents: true,
     screenshotsFolder: path.join('cypress','output'),
+    video: false,
+    trashAssetsBeforeRuns: false,
     env: {
       pathToOutput: path.join('cypress','output', "data.json")
     },
     setupNodeEvents(on, config) {
         on('before:spec', (details) => {
-          // throw Error(`env: ${process.env.pathToOutput} | config: ${JSON.stringify( config )} | details: ${JSON.stringify( details )}`)
           let fullPath = config['env']['pathToOutput']
           let parentPath = path.join( './', path.dirname( fullPath) ) 
           if(!fs.existsSync(parentPath)){

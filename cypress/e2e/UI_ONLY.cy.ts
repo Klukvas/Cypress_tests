@@ -5,7 +5,7 @@ import {prettyString, validateUserDataInput, MonthNum, VerificationError} from '
 import {CurretTestState, SuccessParsed} from '../support/interface'
 
 
-describe('Prove license data', {baseUrl: 'https://findmydoctor.mass.gov/'}, () => {
+describe('Prove license data', () => {
   let licenseInformation: LicenseInformation;
   let searchGrid: SearchGrid;
   let searchForm: SearchForm;
@@ -54,9 +54,8 @@ describe('Prove license data', {baseUrl: 'https://findmydoctor.mass.gov/'}, () =
                   if(resultOfSearch?.msg){
                     return {done: true, msg: resultOfSearch.msg, makeScreenshot: false}
                   }else{
-                      
                       return {done: true, value: {error: VerificationError.NoLicenseFoundError}, makeScreenshot: false}
-                      }
+                    }
               }
           }).then((resultOfRowCheck:CurretTestState) => {
             if(!resultOfRowCheck.done){

@@ -37,7 +37,7 @@ export class SearchResponse{
     processLicenseData(resp: Cypress.Response<any>, userRecord: UserDataInput):CurretTestState{
         let data = resp.body;
         let finalResponse = {} as SuccessParsed;
-        finalResponse.name = data.middleInitial ? 
+        finalResponse.name = data?.middleInitial ? 
             `${data.firstName} ${data.middleInitial} ${data.lastName}` 
             : `${data.firstName} ${data.lastName}` 
         finalResponse.licenseNumber = userRecord.licenseNumber

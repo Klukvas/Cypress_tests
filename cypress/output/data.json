@@ -1,3 +1,31 @@
 [
-  
+  {
+    "licenseStatus": "active",
+    "expirationDate": "12/03/2023",
+    "name": "allan  p  kuong"
+  },
+  {
+    "error": "NumberDoesNotMatchLicenseError"
+  },
+  {
+    "error": "IncorrectInputData"
+  },
+  {
+    "error": "NoLicenseFoundError"
+  },
+  {
+    "name": "Allan P Kuong",
+    "licenseNumber": "80098",
+    "licenseStatus": "Active",
+    "expirationDate": "12/03/2023"
+  },
+  {
+    "error": "NumberDoesNotMatchLicenseError"
+  },
+  {
+    "error": "IncorrectInputData"
+  },
+  {
+    "error": "NoLicenseFoundError"
+  }
 ]
