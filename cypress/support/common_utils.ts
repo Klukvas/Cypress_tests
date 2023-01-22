@@ -1,5 +1,4 @@
 const Validator = require('jsonschema').Validator;
-const fs = require('fs');
 import {UserDataInput} from './interface'
 
 

@@ -24,6 +24,17 @@ export default defineConfig({
             fs.writeFileSync(fullPath, JSON.stringify([]))
           }
         })
+        // on('after:screenshot', (details) => {
+        //   console.log(details)
+        //   let newFilePath = path.join( 
+        //     path.dirname(path.dirname(details.path)),
+        //     `${details.specName}--${details.name}.png`
+
+        //   )
+        //   fs.rename(details.path, newFilePath, (err) => {
+        //       if(err) throw err
+        //   })
+        // })
         // on('task', {
 
         //   writeFail(dataToWrite:object){
